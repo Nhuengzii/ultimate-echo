@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/Nhuengzii/ultimate-echo/issues"
   },
-  "homepage": "https://github.com/Nhuengzii/ultimate-echo#readme"
+  "homepage": "https://github.com/Nhuengzii/ultimate-echo#readme",
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  }
 }
