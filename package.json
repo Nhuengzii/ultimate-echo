@@ -1,0 +1,19 @@
+{
+  "name": "ultimate-echo",
+  "version": "1.0.0",
+  "description": "### New version of Echo (my discord music bot that can use voice command)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nhuengzii/ultimate-echo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nhuengzii/ultimate-echo/issues"
+  },
+  "homepage": "https://github.com/Nhuengzii/ultimate-echo#readme"
+}
