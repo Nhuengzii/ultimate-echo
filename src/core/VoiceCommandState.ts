@@ -15,13 +15,14 @@ export interface VoiceCommandState {
   changeState(newState: VoiceCommandState): void
 }
 
-const echoAliases = ["เอคโค่", "echo", "เอโค่", "อีโค่", "Eco", "eco"]
+const echoAliases = ["เอคโค่", "echo", "เอโค่", "อีโค่", "Eco", "eco", ""]
 
 export class WaitingForActivationState implements VoiceCommandState {
   name: string = "WaitingForActivationState";
   async execute(voiceMessage: VoiceMessage): Promise<void> {
     if (echoAliases.includes(voiceMessage.content)) {
       console.log(`${voiceMessage.member.user.tag} activated echo`);
+      this.echo.currentTargetUserId = voiceMessage.member.user.id;
       this.changeState(new WaitingForCommandState());
     }
   }

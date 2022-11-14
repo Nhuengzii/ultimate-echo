@@ -20,6 +20,7 @@ client.on(Events.ClientReady, () => {
 // Install Ultimate Echo utility to client
 
 const ultimateEcho = UltimateEcho.getInstance(client)
+ultimateEcho.setUpAbility()
 // log install status
 if (ultimateEcho.isInitReay) {
   console.log("Ultimate Echo is ready to use")

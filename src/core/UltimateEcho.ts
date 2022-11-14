@@ -14,11 +14,15 @@ export class UltimateEcho {
 
   private constructor(client: Client) {
     this.client = client
+  }
+
+  setUpAbility(){
     InitializeTextCommandAbility(this.client);
     this.voiceCommandState = new WaitingForActivationState();
     this.voiceCommandState.enter();
     attachASR(this.client);
     this.isInitReay = true
+    
   }
 
   static getInstance(client: Client) {
