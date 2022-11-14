@@ -2,23 +2,22 @@
 
 import { Client } from "discord.js";
 import { InitializeTextCommandAbility } from "./TextCommands/TextCommandHandlers"
+import { WaitingForActivationState, VoiceCommandState } from "./VoiceCommandState"
+import { attachASR } from "./SpeechRecognition/attachASR"
 
 export class UltimateEcho {
   client: Client;
   isInitReay: boolean = false;
-  static instance: UltimateEcho;
+  private static instance: UltimateEcho;
+  voiceCommandState: VoiceCommandState;
+  currentTargetUserId: string = "";
 
-
-
-  constructor(client: Client) {
+  private constructor(client: Client) {
     this.client = client
     InitializeTextCommandAbility(this.client);
-
-
-
-
-
-
+    this.voiceCommandState = new WaitingForActivationState();
+    this.voiceCommandState.enter();
+    attachASR(this.client);
     this.isInitReay = true
   }
 
@@ -27,6 +26,10 @@ export class UltimateEcho {
       UltimateEcho.instance = new UltimateEcho(client);
     }
     return UltimateEcho.instance;
+  }
+
+  async executeVoiceCommand(voiceMessage: any) {
+    await this.voiceCommandState.execute(voiceMessage);
   }
 
 
