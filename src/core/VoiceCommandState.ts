@@ -6,6 +6,7 @@ import { Playable } from "./SpeakerSystem/SpeakerSystem"
 
 // Voice Command
 import { leave } from "./VoiceCommands/leave"
+import { disconnectAll } from "./VoiceCommands/disconnectAll"
 
 
 export interface VoiceCommandState {
@@ -62,7 +63,12 @@ export class WaitingForCommandState implements VoiceCommandState {
         console.log(`${voiceMessage.member.user.tag} want to use LeaveCommand`)
         leave(voiceMessage.member.voice.channel.guild.id);
         this.changeState(new WaitingForActivationState());
-        return;
+        break
+      case "ออกไปให้หมด":
+        console.log(`${voiceMessage.member.user.tag} want to use DisconnectAllCommand`)
+        disconnectAll(voiceMessage.member.voice.channel);
+        this.changeState(new WaitingForActivationState());
+        break
     }
   }
   triggerVoiceMessage: VoiceMessage
