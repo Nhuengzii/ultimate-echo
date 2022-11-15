@@ -79,6 +79,11 @@ export class SpeakerSystem {
     let guildSpeaker: GuildSpeaker = new GuildSpeaker(guildId, connection)
     this.guildSpeakers[guildId] = guildSpeaker
   }
+  removeGuildSpeaker(guildId: string) {
+    if (guildId in this.guildSpeakers) {
+      delete this.guildSpeakers[guildId]
+    }
+  }
 
   speak(guildId: string, playable: IPlayable) {
     let guildSpeaker: GuildSpeaker = this.getGuildSpeaker(guildId)
