@@ -17,7 +17,7 @@ export interface VoiceCommandState {
   changeState(newState: VoiceCommandState): void
 }
 
-const echoAliases = ["เอคโค่", "echo", "เอโค่", "อีโค่", "Eco", "eco", ""]
+const echoAliases = ["เอคโค่", "echo", "เอโค่", "อีโค่", "Eco", "eco", "ผู้ช่วย"]
 
 export class WaitingForActivationState implements VoiceCommandState {
   name: string = "WaitingForActivationState";
