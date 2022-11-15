@@ -1,5 +1,7 @@
 import { VoiceMessage } from "./VoiceCommands/VoiceMessage"
 import { UltimateEcho } from "./UltimateEcho"
+import { TextToSpeech } from "./TextToSpeech/TTS"
+import { Playable } from "./SpeakerSystem/SpeakerSystem"
 
 
 // Voice Command
@@ -23,7 +25,7 @@ export class WaitingForActivationState implements VoiceCommandState {
     if (echoAliases.includes(voiceMessage.content)) {
       console.log(`${voiceMessage.member.user.tag} activated echo`);
       this.echo.currentTargetUserId = voiceMessage.member.user.id;
-      this.changeState(new WaitingForCommandState());
+      this.changeState(new WaitingForCommandState(voiceMessage));
     }
   }
   constructor() {
@@ -63,15 +65,24 @@ export class WaitingForCommandState implements VoiceCommandState {
         return;
     }
   }
-  constructor() {
+  triggerVoiceMessage: VoiceMessage
+  constructor(triggerVoiceMessage: VoiceMessage) {
     this.echo = UltimateEcho.getInstance(undefined);
+    this.triggerVoiceMessage = triggerVoiceMessage;
+
   }
   echo: UltimateEcho
   enter(): void {
     console.log("entering WaitingForCommandState");
+    let textToSpeech = new TextToSpeech();
+    let playable = new Playable(0, textToSpeech.getAudioResource(`ต้องการอะไรคะคุณ ${this.triggerVoiceMessage.member.displayName}`, "th"))
+    this.echo.speakerSystem.speak(this.triggerVoiceMessage.member.guild.id, playable);
   }
   exit(): void {
     console.log("exiting WaitingForCommandState");
+    let textToSpeech = new TextToSpeech();
+    let playable = new Playable(0, textToSpeech.getAudioResource(`จะออกเดี๋ยวนี้ค่ะคุณ ${this.triggerVoiceMessage.member.displayName}`, "th"))
+    this.echo.speakerSystem.speak(this.triggerVoiceMessage.member.guild.id, playable);
   }
   changeState(newState: VoiceCommandState): void {
     this.exit();

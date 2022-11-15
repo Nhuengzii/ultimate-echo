@@ -4,6 +4,7 @@ import { Client } from "discord.js";
 import { InitializeTextCommandAbility } from "./TextCommands/TextCommandHandlers"
 import { WaitingForActivationState, VoiceCommandState } from "./VoiceCommandState"
 import { attachASR } from "./SpeechRecognition/attachASR"
+import { SpeakerSystem, GuildSpeaker, IPlayable, IGuildSpeaker } from "./SpeakerSystem/SpeakerSystem"
 
 export class UltimateEcho {
   client: Client;
@@ -11,18 +12,20 @@ export class UltimateEcho {
   private static instance: UltimateEcho;
   voiceCommandState: VoiceCommandState;
   currentTargetUserId: string = "";
+  speakerSystem: SpeakerSystem;
 
   private constructor(client: Client) {
     this.client = client
   }
 
-  setUpAbility(){
+  setUpAbility() {
     InitializeTextCommandAbility(this.client);
     this.voiceCommandState = new WaitingForActivationState();
     this.voiceCommandState.enter();
+    this.speakerSystem = new SpeakerSystem();
     attachASR(this.client);
     this.isInitReay = true
-    
+
   }
 
   static getInstance(client: Client) {
