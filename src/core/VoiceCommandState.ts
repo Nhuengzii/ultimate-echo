@@ -18,7 +18,7 @@ export interface VoiceCommandState {
   changeState(newState: VoiceCommandState): void
 }
 
-const echoAliases = ["เอคโค่", "echo", "เอโค่", "อีโค่", "Eco", "eco", "ผู้ช่วย"]
+const echoAliases = ["เอคโค่", "echo", "เอโค่", "อีโค่", "Eco", "eco", "ผู้ช่วย", "lego", "เลโก้"]
 
 export class WaitingForActivationState implements VoiceCommandState {
   name: string = "WaitingForActivationState";
@@ -56,12 +56,24 @@ export class WaitingForCommandState implements VoiceCommandState {
     if (voiceMessage.member.id != this.echo.currentTargetUserId) {
       return;
     }
-
     let command = voiceMessage.content;
+
+    if (command.startsWith("เปิดเพลง")) {
+      let music = await this.echo.musicSystem[voiceMessage.member.guild.id].search(command)
+      console.log(music);
+      this.echo.musicSystem[voiceMessage.member.guild.id].addQueue(music);
+      await this.echo.musicSystem[voiceMessage.member.guild.id].play();
+      this.changeState(new WaitingForActivationState());
+      return;
+    }
+
     switch (command) {
       case "ออกไป":
         console.log(`${voiceMessage.member.user.tag} want to use LeaveCommand`)
         leave(voiceMessage.member.voice.channel.guild.id);
+        let textToSpeech = new TextToSpeech();
+        let playable = new Playable(0, textToSpeech.getAudioResource(`จะออกเดี๋ยวนี้ค่ะคุณ ${this.triggerVoiceMessage.member.displayName}`, "th"))
+        this.echo.speakerSystem.speak(this.triggerVoiceMessage.member.guild.id, playable);
         this.changeState(new WaitingForActivationState());
         break
       case "ออกไปให้หมด":
@@ -86,9 +98,6 @@ export class WaitingForCommandState implements VoiceCommandState {
   }
   exit(): void {
     console.log("exiting WaitingForCommandState");
-    let textToSpeech = new TextToSpeech();
-    let playable = new Playable(0, textToSpeech.getAudioResource(`จะออกเดี๋ยวนี้ค่ะคุณ ${this.triggerVoiceMessage.member.displayName}`, "th"))
-    this.echo.speakerSystem.speak(this.triggerVoiceMessage.member.guild.id, playable);
   }
   changeState(newState: VoiceCommandState): void {
     this.exit();

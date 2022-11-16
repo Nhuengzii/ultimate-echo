@@ -5,7 +5,7 @@ import { InitializeTextCommandAbility } from "./TextCommands/TextCommandHandlers
 import { WaitingForActivationState, VoiceCommandState } from "./VoiceCommandState"
 import { attachASR } from "./SpeechRecognition/attachASR"
 import { SpeakerSystem, GuildSpeaker, IPlayable, IGuildSpeaker } from "./SpeakerSystem/SpeakerSystem"
-
+import { MusicSystem, Music } from "./MusicSystem/MusicSystem"
 export class UltimateEcho {
   client: Client;
   isInitReay: boolean = false;
@@ -13,6 +13,7 @@ export class UltimateEcho {
   voiceCommandState: VoiceCommandState;
   currentTargetUserId: string = "";
   speakerSystem: SpeakerSystem;
+  musicSystem: Record<string, MusicSystem> = {};
 
   private constructor(client: Client) {
     this.client = client
@@ -37,6 +38,13 @@ export class UltimateEcho {
 
   async executeVoiceCommand(voiceMessage: any) {
     await this.voiceCommandState.execute(voiceMessage);
+  }
+
+  addMusicSystem(guildId: string) {
+    if (this.musicSystem[guildId]) {
+      return
+    }
+    this.musicSystem[guildId] = new MusicSystem(guildId);
   }
 
 

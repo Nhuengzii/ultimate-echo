@@ -23,5 +23,6 @@ export function join(guild: Guild, voiceChannelId: string) {
   let tts = new TextToSpeech();
   let playable = new Playable(0, tts.getAudioResource("สวัสดีค่ะ", "th"))
   echo.speakerSystem.speak(guild.id, playable);
+  echo.addMusicSystem(guild.id);
   console.log("Joined voice channel");
 }
